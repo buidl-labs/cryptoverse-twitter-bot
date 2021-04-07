@@ -1,0 +1,27 @@
+{
+  "name": "cryptobot-twitter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A twitter bot sharing updates of marketplace of cryptoverse wars",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "format": "pretty-quick",
+    "precommit": "pretty-quick --staged",
+    "test":"node test.js"
+  },
+  "pre-commit": [
+    "format"
+  ],
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "prettier": "1.15.1",
+    "pretty-quick": "1.8.0"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "dotenv": "6.1.0",
+    "puppeteer": "^8.0.0",
+    "twit": "2.2.11"
+  }
+}
