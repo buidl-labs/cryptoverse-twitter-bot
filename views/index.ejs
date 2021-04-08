@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js">
+    </script>
+</head>
+
+<body>
+
+    <p><%= token.tokenID %></p>
+    <div id="bot">
+        <model-viewer id="cryptobot" src="<%= token.Bot3dModelURI %>" alt="cryptobot">
+        </model-viewer>
+    </div>
+    <img id="botimage" src="<%= token.imageURI %>" alt="screenshot">
+    <button onclick="   canvasToImg()">
+        Take Screenshot
+    </button>
+    <!-- <h1>Screenshot:</h1>
+    <div id="output"></div> -->
+</body>
+<script>
+    // function takeshot() {
+    //     let div = document.querySelector('bot');
+    //     html2canvas(div).then(
+    //         function (canvas) {
+    //             document
+    //                 .getElementById('output')
+    //                 .appendChild(canvas);
+    //         })
+    // }
+    function canvasToImg() {
+        const canvas = document.querySelector("model-viewer#cryptobot")
+        const cryptobotimage = canvas.toDataURL('image/png');
+        console.log(cryptobotimage)
+        const botImage = document.querySelector("#botimage");
+        botImage.src = cryptobotimage;
+    }
+</script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+</html>
