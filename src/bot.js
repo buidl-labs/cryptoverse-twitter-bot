@@ -72,6 +72,7 @@ async function getNFTMetadata(token_id, tokens) {
   };
 }
 
+
 async function run() {
   console.log("Launching chromium");
   const browser = await puppeteer.launch({
@@ -93,6 +94,7 @@ async function run() {
   const element = await page.$("model-viewer#cryptobot");
   console.log("got the element");
   await page.waitForSelector(waitForElement, { timeout: 1000000 });
+  console.log("orientation set");
   await page.waitForTimeout(5000);
   const imageName = Date.now();
   await element.screenshot({

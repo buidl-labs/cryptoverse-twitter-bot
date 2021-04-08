@@ -35,15 +35,13 @@
     </div>
 
 </body>
-<!-- <script>
-    function canvasToImg() {
-        const canvas = document.querySelector("model-viewer#cryptobot")
-        const cryptobotimage = canvas.toDataURL('image/png');
-        console.log(cryptobotimage)
-        const botImage = document.querySelector("#botimage");
-        botImage.src = cryptobotimage;
-    }
-</script> -->
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script>
+    function random(numbers) {
+        return numbers[Math.floor(Math.random() * numbers.length)];
+    }
+    const c = document.getElementById("cryptobot")
+    c.orientation = random(["0deg 0deg 45deg", "0deg 0deg -45deg", "0deg 0deg 0deg"]);
+</script>
 
 </html>
