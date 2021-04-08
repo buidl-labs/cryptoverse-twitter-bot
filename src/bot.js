@@ -90,19 +90,6 @@ async function getNFTfromTokenId(token_id) {
 const NFT = getNFTfromTokenId(2);
 console.log(NFT);
 
-async function getAllTokensCount() {
-  const response = await fetch(
-    `https://api.better-call.dev/v1/contract/${INDEXER_NETWORK}/${CONTRACT_ADDRESS}/storage`
-  );
-
-  const result = await response.json();
-
-  const getAllTokenObject = result[0].children.find(
-    (elm) => elm.name === "all_tokens"
-  );
-  console.log(getAllTokenObject.children.length);
-  return getAllTokenObject.children.length;
-}
 
 // // Start once
 // tweeter();
