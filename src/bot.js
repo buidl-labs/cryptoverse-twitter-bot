@@ -11,6 +11,7 @@ const Twit = require("twit"),
 //  let T = new Twit(config.twitterKeys);
 
 app.set("view engine", "ejs");
+app.use(express.static("static"));
 
 console.log(":tada: twitter bot running :tada:");
 const CONTRACT_ADDRESS = "KT1V6cNW5jTUxEwmMhxvNHkMF3Bkm5a9Cfrt";
@@ -93,11 +94,12 @@ async function run() {
   console.log("got the element");
   await page.waitForSelector(waitForElement, { timeout: 1000000 });
   await page.waitForTimeout(5000);
+  const imageName = Date.now();
   await element.screenshot({
-    path: `./images/cryptobot${Date.now()}.jpg`,
+    path: `./images/cryptobot${imageName}.jpg`,
     type: "jpeg",
   });
-  console.log("CRYPTOBOT SCREENSHOT TAKEN!");
+  console.log("CRYPTOBOT SCREENSHOT TAKEN!", imageName);
 
   console.log("CLOSING Chromium!");
   await page.close();

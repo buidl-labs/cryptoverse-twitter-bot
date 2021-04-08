@@ -5,35 +5,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js">
-    </script>
+    <title>Cryptobot</title>
+    <style>
+        #bot {
+            background: url('./bg.jpg') no-repeat center center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+        }
+
+        model-viewer {
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
 </head>
 
 <body>
-
-    <p><%= token.tokenID %></p>
     <div id="bot">
-        <model-viewer id="cryptobot" src="<%= token.Bot3dModelURI %>" alt="cryptobot">
+        <model-viewer id="cryptobot" src="<%= token.Bot3dModelURI %>" alt="cryptobot" scale="0.8 0.8 0.8">
         </model-viewer>
     </div>
-    <img id="botimage" src="<%= token.imageURI %>" alt="screenshot">
-    <button onclick="   canvasToImg()">
-        Take Screenshot
-    </button>
-    <!-- <h1>Screenshot:</h1>
-    <div id="output"></div> -->
+
 </body>
 <script>
-    // function takeshot() {
-    //     let div = document.querySelector('bot');
-    //     html2canvas(div).then(
-    //         function (canvas) {
-    //             document
-    //                 .getElementById('output')
-    //                 .appendChild(canvas);
-    //         })
-    // }
     function canvasToImg() {
         const canvas = document.querySelector("model-viewer#cryptobot")
         const cryptobotimage = canvas.toDataURL('image/png');
