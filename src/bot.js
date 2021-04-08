@@ -49,7 +49,7 @@ async function getNFTfromTokenId(token_id) {
   const all_tokens = [];
   let tk;
 
-  for (let i = 0; i < parseInt(num_keys / 10) + 1; i++) {
+  for (let i = 0; i < 2; i++) {
     tk = await fetch(
       `https://api.better-call.dev/v1/bigmap/${INDEXER_NETWORK}/${
         tokens.value
@@ -81,12 +81,10 @@ async function getNFTfromTokenId(token_id) {
       });
   };
 
-  // console.log("all_tokensx", all_tokens);
-
   const filtered = await Promise.all(all_tokens.map(grabContent));
-  const token = allTokens.find((bot) => bot.tokenId == token_id);
+  const token = filtered.find((bot) => bot.tokenId == token_id);
   // console.log('filtered allTokens', filtered);
-  return filtered;
+  return token;
 }
 
 const NFT = getNFTfromTokenId(2);
