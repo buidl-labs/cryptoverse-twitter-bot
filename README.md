@@ -1,6 +1,7 @@
 # Twitter bot to send updates of Cryptoverse Wars Marketplace
 
-###To run locally
+### To run locally
+
 1.Set environment variables in `.env`
 
 2. `npm install`
