@@ -42,8 +42,8 @@ function process_operation(data) {
 }
 
 async function uploadCryptobot(token_id, metadata) {
-  // const URL = "https://cryptoverse-wars-backend-pr-16.onrender.com";
-  const URL = "http://localhost:3001";
+  const URL = "https://cryptoverse-wars-backend-pr-16.onrender.com";
+  // const URL = "http://localhost:3001";
   console.log("token_id", token_id);
 
   let imageName = await takeScreenshot(token_id);
