@@ -9,18 +9,27 @@ app.use(express.static("static"));
 
 const CONTRACT_ADDRESS = "KT1V6cNW5jTUxEwmMhxvNHkMF3Bkm5a9Cfrt";
 const INDEXER_NETWORK = "mainnet";
+
+// const CONTRACT_ADDRESS = "KT1QVn7QUtU9DgHPpqrWgohg2cPDg7EWEJRd";
+// const INDEXER_NETWORK = "edo2net";
 const url = "http://localhost:3000";
 // const waitForElement = "#cryptobot";
 
 async function runServer() {
   app.get("/", function(req, res) {
     const { id } = req.query;
-    getAllTokens()
-      .then((response) => getNFTMetadata(id, response))
-      .then((token) => {
-        console.log(token);
-        res.render("index", { token: token });
-      });
+    console.log("Waiting...");
+    setTimeout(() => {
+      getAllTokens()
+        .then((response) => {
+          console.log("Found all tokens.", response.length);
+
+          return getNFTMetadata(id, response);
+        })
+        .then((token) => {
+          res.render("index", { token: token });
+        });
+    }, 30000);
   });
 
   const PORT = process.env.PORT || 3000;
@@ -65,19 +74,22 @@ async function getAllTokens() {
     // console.log("all_tokens", all_tokens.length);
     if (all_tokens.length == num_keys) break;
   }
+
   return all_tokens;
 }
 
 async function getNFTMetadata(token_id, tokens) {
-  console.log(tokens);
   const token = tokens.find((tk) => tk.data.key.value == token_id);
   console.log(token);
+  if (!token) {
+    console.log(`token with id(${token_id}) not found.`);
+  }
   let metadataLink = sanitizeJsonUri(
     bytes2Char(token.data.value.children[1].children[0].value)
   );
   const resp = await fetch(metadataLink);
   const res = await resp.json();
-  console.log(sanitizeJsonUri(res.displayUri));
+  console.log(sanitizeJsonUri(res.artifactUri));
   return {
     tokenID: token.data.key.value,
     Bot3dModelURI: sanitizeJsonUri(res.artifactUri),

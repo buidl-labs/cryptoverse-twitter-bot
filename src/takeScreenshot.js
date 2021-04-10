@@ -35,6 +35,7 @@ async function takeScreenshot(token_id) {
   console.log("CLOSING Chromium!");
   await page.close();
   await browser.close();
+  console.log("Chromium closed.");
   return imageName;
 }
 
