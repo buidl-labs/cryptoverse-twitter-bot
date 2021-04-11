@@ -46,16 +46,20 @@ async function takeScreenshot(token_id) {
 }
 
 async function screenshotHandler() {
-  const worker = new Worker("take-screenshot", async (job) => {
-    console.log(`Take screenshot of Cryptobot-${job.data.token_id}`);
-    const imageName = await takeScreenshot(job.data.token_id);
-    const cryptobot = await uploadCryptobot(job.data.token_id, imageName);
-    fs.unlink(imageName, (err) => {
-      if (err) throw err;
-      console.log("File is deleted.");
-    });
-    twitterQueue.add("post-to-twitter", cryptobot);
-  });
+  const worker = new Worker(
+    "take-screenshot",
+    async (job) => {
+      console.log(`Take screenshot of Cryptobot-${job.data.token_id}`);
+      const imageName = await takeScreenshot(job.data.token_id);
+      const cryptobot = await uploadCryptobot(job.data.token_id, imageName);
+      fs.unlink(imageName, (err) => {
+        if (err) throw err;
+        console.log("File is deleted.");
+      });
+      twitterQueue.add("post-to-twitter", cryptobot);
+    },
+    config.redis
+  );
 }
 
 module.exports = screenshotHandler;

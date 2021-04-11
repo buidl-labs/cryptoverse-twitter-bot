@@ -16,4 +16,10 @@ module.exports = {
     imageServerURL: process.env.SELF_URL,
     apiURL: process.env.API_URL,
   },
+  redis: {
+    connection: {
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+    },
+  },
 };

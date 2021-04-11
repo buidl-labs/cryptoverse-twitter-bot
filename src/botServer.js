@@ -26,7 +26,8 @@ async function runServer() {
           return getNFTMetadata(id, response);
         })
         .then((token) => {
-          if(!token) return;
+          if (!token) return;
+          console.log("Rendering.");
           res.render("index", { token: token });
         });
     }, 20000);
