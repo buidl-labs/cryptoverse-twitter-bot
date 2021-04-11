@@ -20,9 +20,11 @@
   "dependencies": {
     "@taquito/taquito": "^8.1.0",
     "@taquito/tzip16": "^8.1.0",
+    "bullmq": "^1.15.1",
     "dotenv": "6.1.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "jimp": "^0.16.1",
     "node-fetch": "^2.6.1",
     "puppeteer": "^8.0.0",
     "twit": "2.2.11"

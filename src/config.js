@@ -7,4 +7,13 @@ module.exports = {
     access_token: process.env.TWITTER_ACCESS_TOKEN,
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
   },
+  contractData: {
+    address: process.env.CONTRACT_ADDRESS,
+    rpcURL: process.env.RPC_URL,
+    indexerNetwork: process.env.INDEXER_NETWORK,
+  },
+  urls: {
+    imageServerURL: process.env.SELF_URL,
+    apiURL: process.env.API_URL,
+  },
 };

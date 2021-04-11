@@ -1,17 +1,17 @@
 const { TezosToolkit } = require("@taquito/taquito");
 const { bytes2Char } = require("@taquito/tzip16");
-const takeScreenshot = require("./takeScreenshot");
-const fetch = require("node-fetch");
-const fs = require("fs");
-const FormData = require("form-data");
+
+const config = require("./config");
+const screenshotQueue = require("./queue/screenshotQueue");
 
 // const CONFIG = {
-//   RPC_URL: "https://edonet.smartpy.io/",
-//   CONTRACT: "KT1QVn7QUtU9DgHPpqrWgohg2cPDg7EWEJRd",
+//   CONTRACT: "KT1V6cNW5jTUxEwmMhxvNHkMF3Bkm5a9Cfrt",
+//   RPC_URL: "https://mainnet.smartpy.io/",
 // };
+
 const CONFIG = {
-  CONTRACT: "KT1V6cNW5jTUxEwmMhxvNHkMF3Bkm5a9Cfrt",
-  RPC_URL: "https://mainnet.smartpy.io/",
+  CONTRACT: config.contractData.address,
+  RPC_URL: config.contractData.rpcURL,
 };
 
 async function streamAndProcessContractOperations() {
@@ -34,45 +34,8 @@ function process_operation(data) {
     data["metadata"]["operation_result"]["storage"][0].args[0].args[1];
 
   const token_id = all_tokens[all_tokens.length - 1]["int"];
-  const metadata = data["parameters"].value[0].args[1]["bytes"];
-  uploadCryptobot(token_id, metadata).then((cryptobot) =>
-    // push the Cryptobot to a queue.
-    console.log(cryptobot)
-  );
-}
-
-async function uploadCryptobot(token_id, metadata) {
-  const URL = "https://cryptoverse-wars-backend-pr-16.onrender.com";
-  // const URL = "http://localhost:3001";
-  console.log("token_id", token_id);
-
-  let imageName = await takeScreenshot(token_id);
-
-  const formData = createFormData(imageName);
-
-  const response = await fetch(`${URL}/cryptobot/upload-image`, {
-    method: "POST",
-    body: formData,
-  });
-
-  const result = await response.json();
-
-  const imageURI = result.body.ipfsHash;
-
-  const cryptobotResponse = await fetch(`${URL}/cryptobot`, {
-    method: "POST",
-    body: JSON.stringify({ id: token_id, imageURI: `ipfs://${imageURI}` }),
-    headers: { "Content-Type": "application/json" },
-  });
-
-  const cryptobot = await cryptobotResponse.json();
-  return cryptobot;
-}
-
-function createFormData(imageName) {
-  let formData = new FormData();
-  formData.append("botImage", fs.createReadStream(imageName));
-  return formData;
+  screenshotQueue.add("take-screenshot", { token_id });
+  console.log(`Cryptobot-${token_id} added to screenshot queue.`);
 }
 
 module.exports = streamAndProcessContractOperations;

@@ -1,18 +1,19 @@
 const express = require("express");
 const fetch = require("node-fetch");
 const { bytes2Char } = require("@taquito/tzip16");
-
+const config = require("./config");
 app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static("static"));
 
-const CONTRACT_ADDRESS = "KT1V6cNW5jTUxEwmMhxvNHkMF3Bkm5a9Cfrt";
-const INDEXER_NETWORK = "mainnet";
+// const CONTRACT_ADDRESS = "KT1V6cNW5jTUxEwmMhxvNHkMF3Bkm5a9Cfrt";
+// const INDEXER_NETWORK = "mainnet";
 
-// const CONTRACT_ADDRESS = "KT1QVn7QUtU9DgHPpqrWgohg2cPDg7EWEJRd";
-// const INDEXER_NETWORK = "edo2net";
-const url = "http://localhost:3000";
+const CONTRACT_ADDRESS = config.contractData.address;
+const INDEXER_NETWORK = config.contractData.indexerNetwork;
+
+// const url = "http://localhost:3000";
 // const waitForElement = "#cryptobot";
 
 async function runServer() {
@@ -22,14 +23,12 @@ async function runServer() {
     setTimeout(() => {
       getAllTokens()
         .then((response) => {
-          console.log("Found all tokens.", response.length);
-
           return getNFTMetadata(id, response);
         })
         .then((token) => {
           res.render("index", { token: token });
         });
-    }, 30000);
+    }, 20000);
   });
 
   const PORT = process.env.PORT || 3000;
@@ -63,7 +62,7 @@ async function getAllTokens() {
   const num_keys = tokensMetataDataJSON.active_keys;
   const all_tokens = [];
   let tk;
-  console.log(num_keys);
+  // console.log(num_keys);
   for (let i = 0; i < parseInt(num_keys / 10) + 1; i++) {
     tk = await fetch(
       `https://api.better-call.dev/v1/bigmap/${INDEXER_NETWORK}/${
@@ -80,7 +79,7 @@ async function getAllTokens() {
 
 async function getNFTMetadata(token_id, tokens) {
   const token = tokens.find((tk) => tk.data.key.value == token_id);
-  console.log(token);
+  // console.log(token);
   if (!token) {
     console.log(`token with id(${token_id}) not found.`);
   }
@@ -89,7 +88,7 @@ async function getNFTMetadata(token_id, tokens) {
   );
   const resp = await fetch(metadataLink);
   const res = await resp.json();
-  console.log(sanitizeJsonUri(res.artifactUri));
+  // console.log(sanitizeJsonUri(res.artifactUri));
   return {
     tokenID: token.data.key.value,
     Bot3dModelURI: sanitizeJsonUri(res.artifactUri),
