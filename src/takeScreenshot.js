@@ -32,13 +32,14 @@ async function takeScreenshot(token_id) {
   console.log("orientation set");
   await page.waitForTimeout(5000);
   const imageName = `./images/cryptobot${Date.now()}.jpg`;
+  console.log(`${imageName} - generated image name`);
   await element.screenshot({
     path: imageName,
     type: "jpeg",
   });
-  // console.log("CRYPTOBOT SCREENSHOT TAKEN!", imageName);
+  console.log("CRYPTOBOT SCREENSHOT TAKEN!", imageName);
 
-  // console.log("CLOSING Chromium!");
+  console.log("CLOSING Chromium!");
   await page.close();
   await browser.close();
   console.log("Chromium closed.");
