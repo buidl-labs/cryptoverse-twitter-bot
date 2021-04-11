@@ -24,18 +24,23 @@ async function streamAndProcessContractOperations() {
 }
 
 function process_operation(data) {
-  const entrypoint = data["parameters"]["entrypoint"];
-  console.log("Entrypoint called", entrypoint);
-  if (entrypoint != "mint") {
-    // Do nothing if entrypoint isn't mint.
-    return;
-  }
-  const all_tokens =
-    data["metadata"]["operation_result"]["storage"][0].args[0].args[1];
+  try {
+    const entrypoint = data["parameters"]["entrypoint"];
+    console.log("Entrypoint called", entrypoint);
+    if (entrypoint != "mint") {
+      // Do nothing if entrypoint isn't mint.
+      return;
+    }
 
-  const token_id = all_tokens[all_tokens.length - 1]["int"];
-  screenshotQueue.add("take-screenshot", { token_id });
-  console.log(`Cryptobot-${token_id} added to screenshot queue.`);
+    const all_tokens =
+      data["metadata"]["operation_result"]["storage"][0].args[0].args[1];
+
+    const token_id = all_tokens[all_tokens.length - 1]["int"];
+    screenshotQueue.add("take-screenshot", { token_id });
+    console.log(`Cryptobot-${token_id} added to screenshot queue.`);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 module.exports = streamAndProcessContractOperations;

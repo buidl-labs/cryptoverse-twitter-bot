@@ -26,6 +26,7 @@ async function runServer() {
           return getNFTMetadata(id, response);
         })
         .then((token) => {
+          if(!token) return;
           res.render("index", { token: token });
         });
     }, 20000);
@@ -79,9 +80,10 @@ async function getAllTokens() {
 
 async function getNFTMetadata(token_id, tokens) {
   const token = tokens.find((tk) => tk.data.key.value == token_id);
-  // console.log(token);
+
   if (!token) {
     console.log(`token with id(${token_id}) not found.`);
+    return;
   }
   let metadataLink = sanitizeJsonUri(
     bytes2Char(token.data.value.children[1].children[0].value)
