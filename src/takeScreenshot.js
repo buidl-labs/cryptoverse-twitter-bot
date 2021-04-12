@@ -58,6 +58,7 @@ async function screenshotHandler() {
         console.log("File is deleted.");
       });
       twitterQueue.add("post-to-twitter", cryptobot);
+      // console.log("Completed the job.");
     },
     config.redis
   );
