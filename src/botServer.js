@@ -17,20 +17,21 @@ const INDEXER_NETWORK = config.contractData.indexerNetwork;
 // const waitForElement = "#cryptobot";
 
 async function runServer() {
-  app.get("/", function(req, res) {
+  app.get("/", async function(req, res) {
     const { id } = req.query;
     console.log("Waiting...");
     setTimeout(() => {
-      getAllTokens()
-        .then((response) => {
-          return getNFTMetadata(id, response);
-        })
-        .then((token) => {
-          if (!token) return;
-          console.log("Rendering.");
-          res.render("index", { token: token });
-        });
-    }, 60000);
+      getTokenData(id).then((resp) => {
+        console.log("Rendering.");
+        const token = {
+          tokenID: resp.token_id,
+          Bot3dModelURI: sanitizeJsonUri(resp.artifact_uri),
+          timestamp: resp.timestamp,
+          imageURI: sanitizeJsonUri(resp.display_uri),
+        };
+        res.render("index", { token: token });
+      });
+    }, 120000);
   });
 
   const PORT = process.env.PORT || 3000;
@@ -48,36 +49,36 @@ function sanitizeJsonUri(origin) {
   return null;
 }
 
-async function getAllTokens() {
-  const response = await fetch(
-    `https://api.better-call.dev/v1/contract/${INDEXER_NETWORK}/${CONTRACT_ADDRESS}/storage`
-  );
-  const result = await response.json();
-  const tokens = result[0].children.find(
-    (elm) => elm.name === "token_metadata"
-  );
-  const tokensMetataData = await fetch(
-    `https://api.better-call.dev/v1/bigmap/${INDEXER_NETWORK}/${tokens.value}`
-  );
-  const tokensMetataDataJSON = await tokensMetataData.json();
-  // console.log("tokenMetadata", tokensMetataDataJSON);
-  const num_keys = tokensMetataDataJSON.active_keys;
-  const all_tokens = [];
-  let tk;
-  // console.log(num_keys);
-  for (let i = 0; i < parseInt(num_keys / 10) + 1; i++) {
-    tk = await fetch(
-      `https://api.better-call.dev/v1/bigmap/${INDEXER_NETWORK}/${
-        tokens.value
-      }/keys?offset=${10 * i}`
-    );
-    all_tokens.push(...(await tk.json()));
-    // console.log("all_tokens", all_tokens.length);
-    if (all_tokens.length == num_keys) break;
-  }
+// async function getAllTokens() {
+//   const response = await fetch(
+//     `https://api.better-call.dev/v1/contract/${INDEXER_NETWORK}/${CONTRACT_ADDRESS}/storage`
+//   );
+//   const result = await response.json();
+//   const tokens = result[0].children.find(
+//     (elm) => elm.name === "token_metadata"
+//   );
+//   const tokensMetataData = await fetch(
+//     `https://api.better-call.dev/v1/bigmap/${INDEXER_NETWORK}/${tokens.value}`
+//   );
+//   const tokensMetataDataJSON = await tokensMetataData.json();
+//   // console.log("tokenMetadata", tokensMetataDataJSON);
+//   const num_keys = tokensMetataDataJSON.active_keys;
+//   const all_tokens = [];
+//   let tk;
+//   // console.log(num_keys);
+//   for (let i = 0; i < parseInt(num_keys / 10) + 1; i++) {
+//     tk = await fetch(
+//       `https://api.better-call.dev/v1/bigmap/${INDEXER_NETWORK}/${
+//         tokens.value
+//       }/keys?offset=${10 * i}`
+//     );
+//     all_tokens.push(...(await tk.json()));
+//     // console.log("all_tokens", all_tokens.length);
+//     if (all_tokens.length == num_keys) break;
+//   }
 
-  return all_tokens;
-}
+//   return all_tokens;
+// }
 
 async function getNFTMetadata(token_id, tokens) {
   const token = tokens.find((tk) => tk.data.key.value == token_id);
@@ -98,6 +99,24 @@ async function getNFTMetadata(token_id, tokens) {
     timestamp: token.data.timestamp,
     imageURI: sanitizeJsonUri(res.displayUri),
   };
+}
+
+async function getTokenData(token_id) {
+  try {
+    const response = await fetch(
+      `https://api.better-call.dev/v1/contract/${INDEXER_NETWORK}/${CONTRACT_ADDRESS}/tokens?token_id=${token_id}`
+    );
+
+    const tokens = await response.json();
+
+    if (tokens.length == 0) {
+      return;
+    }
+    let token = tokens.find((tk) => tk.token_id == token_id);
+    return token;
+  } catch (err) {
+    return err;
+  }
 }
 
 module.exports = runServer;

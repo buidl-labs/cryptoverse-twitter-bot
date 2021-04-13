@@ -12,7 +12,7 @@ function main() {
       async (job) => {
         console.log("twitterBot job being processed.");
         const { token_id, imageURI } = job.data;
-
+        console.log(job.data);
         const imageURL = sanitizeJsonUri(imageURI);
         const imageResp = await fetch(imageURL);
         const imageBuffer = await imageResp.buffer();
