@@ -32,7 +32,7 @@ async function takeScreenshot(token_id) {
   await page.waitForSelector("#cryptobot", { timeout: 1000000 });
   console.log("orientation set");
   await page.waitForTimeout(10000);
-  const imageName = `./images/cryptobot${Date.now()}.jpg`;
+  const imageName = `./bot_images/cryptobot${Date.now()}.jpg`;
   console.log(`${imageName} - generated image name`);
   await element.screenshot({
     path: imageName,
