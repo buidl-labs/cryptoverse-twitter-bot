@@ -11,7 +11,7 @@ function main() {
       "twitter-queue",
       async (job) => {
         console.log("twitterBot job being processed.");
-        const { token_id, imageURI } = job.data;
+        const { token_id, imageURI, mintedBy } = job.data;
         console.log(job.data);
         const imageURL = sanitizeJsonUri(imageURI);
         const imageResp = await fetch(imageURL);
@@ -39,8 +39,20 @@ function main() {
           ) {
             if (!err) {
               // now we can reference the media and post a tweet (media will attach to the tweet)
+              let twitterCopy;
+              if (mintedBy) {
+                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!
+                Cryptobot-${token_id} minted by ${mintedBy}
+                
+                https://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
+              } else {
+                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!
+                Cryptobot-${token_id} was minted 🤖 ⚡️
+              
+                https://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
+              }
               const params = {
-                status: "Super cool cryptobot",
+                status: twitterCopy,
                 media_ids: [mediaIdStr],
               };
 
