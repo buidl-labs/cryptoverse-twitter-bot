@@ -34,10 +34,14 @@ async function takeScreenshot(token_id) {
   await page.waitForTimeout(10000);
   const imageName = `./bot_images/cryptobot${Date.now()}.jpg`;
   console.log(`${imageName} - generated image name`);
-  await element.screenshot({
-    path: imageName,
-    type: "jpeg",
-  });
+  try {
+    await element.screenshot({
+      path: imageName,
+      type: "jpeg",
+    });
+  } catch (err) {
+    console.log(err.message);
+  }
 
   // console.log(await page.content());
   console.log("CRYPTOBOT SCREENSHOT TAKEN!");
