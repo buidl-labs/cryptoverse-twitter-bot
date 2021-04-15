@@ -1,6 +1,6 @@
 const runServer = require("./src/botServer");
 const processContractOperations = require("./src/tezosStream");
-const screenshotHandler = require("./src/takeScreenshot");
+const { screenshotHandler, takeScreenshot } = require("./src/takeScreenshot");
 const twitterBot = require("./src/twitterBot");
 
 async function main() {
@@ -9,6 +9,7 @@ async function main() {
   let serverRunning = await runServer();
   if (serverRunning) {
     processContractOperations();
+    // takeScreenshot(9);
   }
 }
 
