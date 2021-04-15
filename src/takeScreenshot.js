@@ -26,9 +26,9 @@ async function takeScreenshot(token_id) {
     console.log(error);
   }
 
-  // console.log("Waiting for page to load...");
+  console.log("Waiting for page to load...");
   const element = await page.$("model-viewer#cryptobot");
-  // console.log("got the element");
+  console.log("got the element");
   await page.waitForSelector("#cryptobot", { timeout: 1000000 });
   console.log("orientation set");
   await page.waitForTimeout(10000);
