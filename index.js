@@ -9,7 +9,7 @@ async function main() {
   let serverRunning = await runServer();
   if (serverRunning) {
     processContractOperations();
-    // takeScreenshot(9);
+    // takeScreenshot(1);
   }
 }
 
