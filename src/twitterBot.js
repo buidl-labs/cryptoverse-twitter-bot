@@ -23,6 +23,10 @@ function main() {
           data,
           response
         ) {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
           console.log(`Image uploaded to twitter - ${data.media_id_string}`);
 
           const mediaIdStr = data.media_id_string;
@@ -63,6 +67,8 @@ function main() {
               ) {
                 console.log(data.id);
               });
+            } else {
+              console.log(err.message);
             }
           });
         });
