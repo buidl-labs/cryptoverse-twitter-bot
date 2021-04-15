@@ -33,7 +33,7 @@ async function runServer() {
         console.log(token);
         res.render("index", { token: token });
       });
-    }, 120000);
+    }, 30000);
   });
 
   const PORT = process.env.PORT || 3000;
