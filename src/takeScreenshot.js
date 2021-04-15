@@ -74,4 +74,4 @@ async function screenshotHandler() {
   );
 }
 
-module.exports = screenshotHandler;
+module.exports = takeScreenshot;

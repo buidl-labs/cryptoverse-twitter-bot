@@ -29,19 +29,20 @@
 </head>
 
 <body>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script>
+        function random(numbers) {
+            return numbers[Math.floor(Math.random() * numbers.length)];
+        }
+        const c = document.getElementById("cryptobot")
+        c.orientation = random(["0deg 0deg 30deg", "0deg 0deg -30deg", "0deg 0deg 0deg"]);
+    </script>
     <div id="bot">
         <model-viewer id="cryptobot" src="<%= token.Bot3dModelURI %>" alt="cryptobot" scale="0.8 0.8 0.8">
         </model-viewer>
     </div>
 
 </body>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<script>
-    function random(numbers) {
-        return numbers[Math.floor(Math.random() * numbers.length)];
-    }
-    const c = document.getElementById("cryptobot")
-    c.orientation = random(["0deg 0deg 30deg", "0deg 0deg -30deg", "0deg 0deg 0deg"]);
-</script>
+
 
 </html>
