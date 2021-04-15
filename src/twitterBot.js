@@ -45,15 +45,14 @@ function main() {
               // now we can reference the media and post a tweet (media will attach to the tweet)
               let twitterCopy;
               if (mintedBy) {
-                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!
-                Cryptobot-${token_id} minted by ${mintedBy}
-                
-                https://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
+                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!\nCryptobot-${token_id} minted by ${mintedBy
+                  .split("")
+                  .splice(0, 12)
+                  .join(
+                    ""
+                  )}...🤖 ⚡️\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
               } else {
-                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!
-                Cryptobot-${token_id} was minted 🤖 ⚡️
-              
-                https://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
+                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!\nCryptobot-${token_id} was minted 🤖 ⚡️\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
               }
               const params = {
                 status: twitterCopy,

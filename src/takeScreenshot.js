@@ -20,7 +20,7 @@ async function takeScreenshot(token_id) {
 
   try {
     await page.goto(URL, { waitUntil: "networkidle0", timeout: 0 });
-    // await page.setViewport({ width: 1600, height: 1900, deviceScaleFactor: 2 });
+    await page.setViewport({ width: 2400, height: 1350, deviceScaleFactor: 2 });
     console.log("Content and Viewport are set.");
     const element = await page.$("model-viewer#cryptobot");
     console.log("got the element");
