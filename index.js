@@ -4,8 +4,8 @@ const takeScreenshot = require("./src/takeScreenshot");
 const twitterBot = require("./src/twitterBot");
 
 async function main() {
-  screenshotHandler();
-  twitterBot();
+  // screenshotHandler();
+  // twitterBot();
   let serverRunning = await runServer();
   if (serverRunning) {
     // processContractOperations();
