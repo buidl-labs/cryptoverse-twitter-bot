@@ -13,7 +13,7 @@ async function takeScreenshot(token_id) {
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox"],
-    devtools: true,
+    headless: true,
     ignoreHTTPSErrors: true,
   });
   const page = await browser.newPage();
