@@ -22,6 +22,7 @@ async function runServer() {
     console.log("Waiting...");
     setTimeout(() => {
       getTokenData(id).then((resp) => {
+        console.log(resp);
         console.log("Rendering.");
         const token = {
           tokenID: resp.token_id,
@@ -29,6 +30,7 @@ async function runServer() {
           timestamp: resp.timestamp,
           imageURI: sanitizeJsonUri(resp.display_uri),
         };
+        console.log(token);
         res.render("index", { token: token });
       });
     }, 120000);
