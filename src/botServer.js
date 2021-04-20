@@ -18,22 +18,28 @@ const INDEXER_NETWORK = config.contractData.indexerNetwork;
 
 async function runServer() {
   app.get("/", async function(req, res) {
-    const { id } = req.query;
-    console.log("Waiting...");
-    setTimeout(() => {
-      getTokenData(id).then((resp) => {
-        console.log(resp);
-        console.log("Rendering.");
-        const token = {
-          tokenID: resp.token_id,
-          Bot3dModelURI: sanitizeJsonUri(resp.artifact_uri),
-          timestamp: resp.timestamp,
-          imageURI: sanitizeJsonUri(resp.display_uri),
-        };
-        console.log(token);
-        res.render("index", { token: token });
-      });
-    }, 120000);
+    try {
+      const { id } = req.query;
+      console.log("Waiting...");
+      setTimeout(() => {
+        getTokenData(id).then((resp) => {
+          console.log(resp);
+
+          console.log("Rendering.");
+          const token = {
+            tokenID: resp.token_id,
+            Bot3dModelURI: sanitizeJsonUri(resp.artifact_uri),
+            timestamp: resp.timestamp,
+            imageURI: sanitizeJsonUri(resp.display_uri),
+          };
+          console.log(token);
+          res.render("index", { token: token });
+        });
+      }, 120000);
+    } catch (err) {
+      console.log(err.message);
+      return res.json({ err: err.message }).status(404);
+    }
   });
 
   const PORT = process.env.PORT || 3000;
@@ -115,7 +121,8 @@ async function getTokenData(token_id) {
       return;
     }
     let token = tokens.find((tk) => tk.token_id == token_id);
-    return token;
+    if (token.artifact_uri && token.display_uri) return token;
+    return {};
   } catch (err) {
     return err;
   }
