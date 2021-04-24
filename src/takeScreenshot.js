@@ -26,8 +26,8 @@ async function takeScreenshot(token_id) {
     console.log("got the element");
     await page.waitForSelector("#cryptobot", { timeout: 60000 });
     console.log("selector is available now");
-    console.log("Waiting for 30 seconds now");
-    await page.waitForTimeout(30000);
+    console.log("Waiting for 2mins seconds now");
+    await page.waitForTimeout(200000);
     const imageName = `./bot_images/cryptobot${Date.now()}.jpg`;
     console.log(`${imageName} - generated image name`);
 
