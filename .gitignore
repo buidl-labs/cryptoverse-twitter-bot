@@ -5,3 +5,4 @@ yarn.lock
 images/
 bot_images/*.jpg
 bot_images/*.jpeg
+bot_images/*.png

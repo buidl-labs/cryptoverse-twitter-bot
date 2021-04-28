@@ -2,7 +2,7 @@ const config = require("./config");
 
 const { Worker } = require("bullmq");
 const Twit = require("twit");
-const fetch = require("node-fetch");
+const fs = require("fs");
 
 function main() {
   try {
@@ -11,14 +11,10 @@ function main() {
       "twitter-queue",
       async (job) => {
         console.log("twitterBot job being processed.");
-        const { token_id, imageURI, mintedBy } = job.data;
+        const { token_id, imageName } = job.data;
         console.log(job.data);
-        const imageURL = sanitizeJsonUri(imageURI);
-        const imageResp = await fetch(imageURL);
-        const imageBuffer = await imageResp.buffer();
-        const imageBase64 = imageBuffer.toString("base64");
 
-        twitterBot.post("media/upload", { media_data: imageBase64 }, function(
+        twitterBot.postMediaChunked({ file_path: imageName }, function(
           err,
           data,
           response
@@ -28,7 +24,7 @@ function main() {
             return;
           }
           console.log(`Image uploaded to twitter - ${data.media_id_string}`);
-
+          // deleteImage(imageName);
           const mediaIdStr = data.media_id_string;
           const altText = `Cryptobot-${token_id} from Cryptoverse Wars`;
           const meta_params = {
@@ -43,17 +39,8 @@ function main() {
           ) {
             if (!err) {
               // now we can reference the media and post a tweet (media will attach to the tweet)
-              let twitterCopy;
-              if (mintedBy) {
-                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!\nCryptobot-${token_id} minted by ${mintedBy
-                  .split("")
-                  .splice(0, 12)
-                  .join(
-                    ""
-                  )}...🤖 ⚡️\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
-              } else {
-                twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!\nCryptobot-${token_id} was minted 🤖 ⚡️\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
-              }
+              let twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!\nCryptobot-${token_id} was minted 🤖 ⚡️\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
+
               const params = {
                 status: twitterCopy,
                 media_ids: [mediaIdStr],
@@ -65,10 +52,12 @@ function main() {
                 response
               ) {
                 console.log(data.id);
+                if (err) console.log("error uploading tweet ->", err.message);
               });
             } else {
-              console.log(err.message);
+              console.log("error upload image to twitter ->", err.message);
             }
+            // deleteImage(imageName);
           });
         });
       },
@@ -79,10 +68,11 @@ function main() {
   }
 }
 
-function sanitizeJsonUri(origin) {
-  if (origin.startsWith("ipfs://")) {
-    return `https://cloudflare-ipfs.com/ipfs/${origin.substring(7)}/`;
-  }
-  return null;
+function deleteImage(imageName) {
+  fs.unlink(imageName, (err) => {
+    if (err) throw err;
+    console.log("File is deleted.");
+  });
 }
+
 module.exports = main;
