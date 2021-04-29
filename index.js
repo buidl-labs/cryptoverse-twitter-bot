@@ -1,8 +1,10 @@
 const processContractOperations = require("./src/tezosStream");
-const twitterBot = require("./src/twitterBot");
 const runServer = require("./src/botServer");
+const Twit = require("twit");
+const config = require("./src/config");
 
-twitterBot();
+const createImage = require("./src/createImage");
+
 async function main() {
   /* 
   1. Listen to mint operations
@@ -12,10 +14,11 @@ async function main() {
       2. Process the image to add a background
     3. Post to twitter  
   */
+  const twitterBot = new Twit(config.twitterKeys);
   const serverRunning = await runServer();
   if (serverRunning) {
     console.log("Server running now.");
-    processContractOperations();
+    processContractOperations(twitterBot);
   }
 }
 

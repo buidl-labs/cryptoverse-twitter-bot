@@ -1,19 +1,16 @@
 const { TezosToolkit } = require("@taquito/taquito");
 const { bytes2Char } = require("@taquito/tzip16");
 const fetch = require("node-fetch");
-
 const config = require("./config");
 const createImage = require("./createImage");
-const twitterQueue = require("./queue/twitterQueue");
-
-// KT19KiZtHMsDSg5pRF5bS45uzG7EreQSAtJL
+const postToTwitter = require("./twitterBot");
 
 const CONFIG = {
   CONTRACT: config.contractData.address,
   RPC_URL: config.contractData.rpcURL,
 };
 
-async function streamAndProcessContractOperations() {
+async function streamAndProcessContractOperations(twitterBot) {
   async function getTokenMetadata(token_id) {
     if (!token_id) return;
 
@@ -54,12 +51,11 @@ async function streamAndProcessContractOperations() {
           sanitizeJsonUri(resJSON.displayUri)
         );
         console.log(`Image generated: ${imageName}`);
-        const jobData = {
+        const cryptobot = {
           token_id: token_id,
           imageName: imageName,
         };
-        console.log("Adding to twitter queue.", jobData);
-        twitterQueue.add("post-to-twitter", jobData);
+        postToTwitter(twitterBot, cryptobot);
       });
     } catch (err) {
       console.log(err);
