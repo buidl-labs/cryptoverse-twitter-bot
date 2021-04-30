@@ -34,7 +34,7 @@ async function createImage(imageHash) {
           }
           
           #bot{
-            width: 60%;
+            width: 80%;
             position: relative;
             z-index: 10;
           }
@@ -52,7 +52,7 @@ async function createImage(imageHash) {
     const res = await fetch(`https://gateway.pinata.cloud/ipfs/${imageHash}`);
     const imageBase64 = Buffer.from(await res.buffer()).toString();
 
-    const image = fs.readFileSync("./static/bg.jpg");
+    const image = fs.readFileSync("./static/bg.jpeg");
 
     const bgImage = new Buffer.from(image).toString("base64");
     const dataURI = "data:image/jpeg;base64," + bgImage;
