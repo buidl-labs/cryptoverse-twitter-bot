@@ -17,29 +17,33 @@ const INDEXER_NETWORK = config.contractData.indexerNetwork;
 // const waitForElement = "#cryptobot";
 
 async function runServer() {
-  app.get("/", async function(req, res) {
-    try {
-      const { id } = req.query;
-      console.log("Waiting...");
-      setTimeout(() => {
-        getTokenData(id).then((resp) => {
-          console.log(resp);
+  // app.get("/", async function(req, res) {
+  //   try {
+  //     const { id } = req.query;
+  //     console.log("Waiting...");
+  //     setTimeout(() => {
+  //       getTokenData(id).then((resp) => {
+  //         console.log(resp);
 
-          console.log("Rendering.");
-          const token = {
-            tokenID: resp.token_id,
-            Bot3dModelURI: sanitizeJsonUri(resp.artifact_uri),
-            timestamp: resp.timestamp,
-            imageURI: sanitizeJsonUri(resp.display_uri),
-          };
-          console.log(token);
-          res.render("index", { token: token });
-        });
-      }, 120000);
-    } catch (err) {
-      console.log(err.message);
-      return res.json({ err: err.message }).status(404);
-    }
+  //         console.log("Rendering.");
+  //         const token = {
+  //           tokenID: resp.token_id,
+  //           Bot3dModelURI: sanitizeJsonUri(resp.artifact_uri),
+  //           timestamp: resp.timestamp,
+  //           imageURI: sanitizeJsonUri(resp.display_uri),
+  //         };
+  //         console.log(token);
+  //         res.render("index", { token: token });
+  //       });
+  //     }, 120000);
+  //   } catch (err) {
+  //     console.log(err.message);
+  //     return res.json({ err: err.message }).status(404);
+  //   }
+  // });
+
+  app.get("/", function(req, res) {
+    res.json({ message: "yo, this is the twitter bot." });
   });
 
   const PORT = process.env.PORT || 3000;
