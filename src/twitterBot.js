@@ -25,8 +25,13 @@ function postToTwitter(twitterBot, cryptobot) {
       response
     ) {
       if (!err) {
+        let copytext = [
+          `Say hi👋 to the freshly minted Cryptobot-${token_id} 🤖 into the Cryptoverse 🌐\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id} #cryptobots #nft #tezos`,
+          `Welcome Cryptobot-${token_id} 🤖 to the Cryptoverse 🌐\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id} #cryptobots #nft #tezos`,
+          `Cryptobot-${token_id} 🤖 joins the Cryptoverse 🌐\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id} #cryptobots #nft #tezos `,
+        ];
         // now we can reference the media and post a tweet (media will attach to the tweet)
-        let twitterCopy = `🥳 New Cryptobot joins the Cryptoverse!\nCryptobot-${token_id} was minted 🤖 ⚡️\n\nhttps://cryptocodeschool.in/tezos/cryptobot/${token_id}`;
+        let twitterCopy = copytext[Math.floor(Math.random() * copytext.length)];
 
         const params = {
           status: twitterCopy,
